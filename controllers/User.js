@@ -1,8 +1,6 @@
 const User = require("../models/UserModel");
 const bcrypt = require("bcrypt");
-const  generateToken  = require("../config/generateToken");
-const ErrorResponse = require("../utils/errorHandler");
-
+const generateToken = require("../config/generateToken");
 const register = async (req, res, next) => {
   const { name, userName, email, password } = req.body;
   // Validate request body
@@ -53,7 +51,7 @@ const login = async (req, res, next) => {
     res.cookie("userToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",  
+      sameSite: "strict",
     });
     return res
       .status(200)
@@ -62,11 +60,10 @@ const login = async (req, res, next) => {
     return next(new ErrorResponse(err.message, 500));
   }
 };
-const logout=(req,res)=>{
-  res.clearCookie('userToken');
-  
-  return  res
-  .status(200)
-  .json({ success: true, message: "Logout successful" });
-}
-module.exports = { register, login,logout };
+const logout = (req, res) => {
+  res.clearCookie("userToken");
+
+  return res.status(200).json({ success: true, message: "Logout successful" });
+};
+
+module.exports = { register, login, logout };

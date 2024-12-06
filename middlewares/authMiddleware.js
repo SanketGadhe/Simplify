@@ -2,8 +2,10 @@
 
 const jwt = require("jsonwebtoken");
 const ErrorResponse = require("../utils/errorHandler");
+const cookieParser = require("cookie-parser");
 
-const protect = (req, res, next) => {
+const protect = async (req, res, next) => {
+ 
   let token;
 
   // Check for token in Authorization header or cookies
@@ -21,13 +23,12 @@ const protect = (req, res, next) => {
   try {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
     // Attach user information to the request object
-    req.user = decoded.userId;
+    req.user = decoded.id;
+
     next();
   } catch (err) {
     return next(new ErrorResponse("Not authorized, invalid token", 401));
   }
 };
-
-module.exports = { protect };
+module.exports =  protect ;
