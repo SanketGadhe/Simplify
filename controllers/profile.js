@@ -1,5 +1,7 @@
 const ErrorResponse = require("../utils/errorHandler");
 const Profile = require("../models/userProfileModel");
+const user = require("../models/UserModel");
+const Notification=require('../models/Notification')
 const createProfile = async (req, res, next) => {
   const {
     affiliation,
@@ -25,7 +27,12 @@ const createProfile = async (req, res, next) => {
       awards,
       socialLinks,
     });
-
+    const userUpdated = await user.findOneAndUpdate(
+      { _id: req.user },
+      {
+        profile_id: createProfile._id,
+      }
+    );
     res.status(201).json({
       success: true,
       message: "Profile created successfully",
@@ -37,7 +44,7 @@ const createProfile = async (req, res, next) => {
 };
 const showProfile = async (req, res) => {
   try {
-    const profile = await Profile.findOne({ userId:req.user });
+    const profile = await Profile.findOne({ userId: req.user });
     res.status(200).json({
       success: true,
       message: "Profile successfull",
@@ -47,6 +54,22 @@ const showProfile = async (req, res) => {
     return next(new ErrorResponse(err.message, 500));
   }
 };
+
+const showNotifications=async (req,res,next)=>{
+  try{
+    const userprofile=await user.findOne({_id:req.user})
+
+    const allNotification=await Notification.find({userId:userprofile.profile_id})
+    res.status(200).json({
+      success: true,
+      message: "All Notification",
+      Notifications:allNotification,
+    });  
+  }catch(err){
+    return next(new ErrorResponse(err.message, 500));
+  }
+ 
+}
 const editProfile = async (req, res, next) => {
   const {
     affiliation,
@@ -96,4 +119,4 @@ const editProfile = async (req, res, next) => {
   }
 };
 
-module.exports = { createProfile, editProfile, showProfile };
+module.exports = { createProfile, editProfile, showProfile ,showNotifications};

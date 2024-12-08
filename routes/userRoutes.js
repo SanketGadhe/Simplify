@@ -1,13 +1,13 @@
 
 const express = require("express");
 const { register, login, logout } = require("../controllers/User");
-const { createProfile, editProfile, showProfile } = require("../controllers/profile");
-const router = express.Router();
+const { createProfile, editProfile, showProfile, showNotifications } = require("../controllers/profile");
 const upload = require("../config/multerFile");
+const router = express.Router();
 const protect = require("../middlewares/authMiddleware");
+const handleValidationErrors = require("../middlewares/handelValidationError");
 const registerValidation = require("../validation/registerValidators");
 const createProfileValidation = require("../validation/profileValidator");
-const handleValidationErrors = require("../middlewares/handelValidationError");
 const {
   createPost,
   editPost,
@@ -66,6 +66,7 @@ router
   );
 
 router.route("/showPost").get(protect, showPost);
+router.route("/showNotification").get(protect, showNotifications);
 
 router.route("/deletePost/:post_id").post(protect, deletePost);
 

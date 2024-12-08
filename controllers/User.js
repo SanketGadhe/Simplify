@@ -1,6 +1,7 @@
 const User = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const generateToken = require("../config/generateToken");
+const ErrorResponse=require('../utils/errorHandler')
 const register = async (req, res, next) => {
   const { name, userName, email, password } = req.body;
   // Validate request body
@@ -45,7 +46,10 @@ const login = async (req, res, next) => {
     }
     const ismatch = await isUser.matchPassword(password);
     if (!ismatch) {
-      return next(new ErrorResponse("Invalid email or password", 401));
+      return res
+      .status(200)
+      .json({ success: false, message: "Invalid email or password"});
+  
     }
     const token = generateToken(isUser._id);
     res.cookie("userToken", token, {

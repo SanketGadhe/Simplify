@@ -5,6 +5,10 @@ const userSchema=mongoose.Schema({
     userName:String,
     email:String,
     password:String,
+    profile_id: {
+        type: String,
+        default: null
+    }
 }
 )
 userSchema.methods.matchPassword = async function (enteredPassword) {

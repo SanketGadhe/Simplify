@@ -12,7 +12,7 @@ const followUser = async (req, res, next) => {
     }
 
     // Find the user profile of the current user
-    const userProfile = await UserProfile.findOne({userId:userId});
+    const userProfile = await UserProfile.findOne({ userId: userId });
     if (!userProfile) {
       return res.status(404).json({
         success: false,
@@ -21,7 +21,7 @@ const followUser = async (req, res, next) => {
     }
 
     // Find the user profile of the user to follow
-    const followedUserProfile = await UserProfile.findOne({userId:followId});
+    const followedUserProfile = await UserProfile.findOne({ userId: followId });
     if (!followedUserProfile) {
       return res.status(404).json({
         success: false,
@@ -68,7 +68,7 @@ const unfollowUser = async (req, res, next) => {
     }
 
     // Find the user profile of the current user
-    const userProfile = await UserProfile.findOne({userId});
+    const userProfile = await UserProfile.findOne({ userId });
     if (!userProfile) {
       return res.status(404).json({
         success: false,
@@ -77,7 +77,9 @@ const unfollowUser = async (req, res, next) => {
     }
 
     // Find the user profile of the user to unfollow
-    const unfollowedUserProfile = await UserProfile.findOne({userId:unfollowId});
+    const unfollowedUserProfile = await UserProfile.findOne({
+      userId: unfollowId,
+    });
     if (!unfollowedUserProfile) {
       return res.status(404).json({
         success: false,

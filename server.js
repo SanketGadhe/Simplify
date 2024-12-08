@@ -6,6 +6,7 @@ const db=require('./config/db')
 const dotenv=require('dotenv');
 const path=require('path')
 const cookieParser = require('cookie-parser');
+const Collaboration=require('./routes/collabration')
 dotenv.config()
 db();
 
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname,'public')))
 
 app.use('/user',userRoutes)
+app.use('/collabration',Collaboration)
 
 const  protect  = require("./middlewares/authMiddleware");
 app.get('/',protect,(req,res)=>{
